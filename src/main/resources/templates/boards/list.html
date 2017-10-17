@@ -26,6 +26,17 @@
                 </tr>
                 </tbody>
             </table>
+
+            <div>
+                <select id="searchType">
+                    <option>--</option>
+                    <option value="t" th:selected="${pageVO.type} == 't'">Titleoption</option>
+                    <option value="c" th:selected="${pageVO.type} == 'c'">Contentoption</option>
+                    <option value="w" th:selected="${pageVO.type} == 'w'">Writeroption</option>
+                </select>
+                <input type="text" id="searchKeyword" th:value="${pageVO.keyword}">
+                <button id="searchBtn">Search</button>
+            </div>
         </div>
 
 <!-- paging -->
@@ -54,6 +65,8 @@
     <form id="f1" th:action="@{list}" method="get">
         <input type="hidden" name="page" th:value="${result.currentPageNum}">
         <input type="hidden" name="size" th:value="${result.currentPage.pageSize}">
+        <input type="hidden" name="type" th:value="${pageVO.type}">
+        <input type="hidden" name="keyword" th:value="${pageVO.keyword}">
     </form>
 
 </div>
