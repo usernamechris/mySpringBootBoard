@@ -1,6 +1,5 @@
 package com.han.board.domain;
 
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,29 +9,28 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "tbl_webboards")
-@EqualsAndHashCode(of="bno")
-@ToString(exclude = "replies")
-public class WebBoard {
+@Table(name = "tbl_webreplies")
+@EqualsAndHashCode(of = "rno")
+@ToString
+public class WebReply {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long bno;
-    private String title;
+    private Long rno;
 
-    private String writer;
+    private String replyTest;
 
-    private String content;
+    private String replyer;
 
     @CreationTimestamp
     private Timestamp regdate;
     @UpdateTimestamp
     private Timestamp updatedate;
 
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
-    private List<WebReply> replies;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WebBoard board;
 }
