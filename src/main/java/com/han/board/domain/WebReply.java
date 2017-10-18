@@ -1,5 +1,6 @@
 package com.han.board.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +23,7 @@ public class WebReply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long rno;
 
-    private String replyTest;
+    private String replyText;
 
     private String replyer;
 
@@ -31,6 +32,7 @@ public class WebReply {
     @UpdateTimestamp
     private Timestamp updatedate;
 
+    @JsonIgnore // 양방향 참조시 무한 참조되는것 방지. json 객체 생성시 board 객체는 json화 하지 않는다
     @ManyToOne(fetch = FetchType.LAZY)
     private WebBoard board;
 }
