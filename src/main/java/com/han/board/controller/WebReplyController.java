@@ -67,6 +67,7 @@ public class WebReplyController {
             @PathVariable("bno") Long bno,
             @RequestBody WebReply reply) {
 
+        log.info("modify bno: " + bno);
         log.info("modify reply: " + reply);
 
         replyRepo.findById(reply.getRno()).ifPresent(origin -> {
