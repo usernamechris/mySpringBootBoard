@@ -13,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Log
@@ -32,5 +34,31 @@ public class CustomRepositoryTests {
         Page<Object[]> result = repo.getCustomPage(type, keyword, pageable);
 
         log.info("" + result);
+
+        log.info("TOTAL PAGES: " + result.getTotalPages());
+
+        log.info("TOTAL SIZE: " + result.getTotalElements());
+
+        result.getContent().forEach(arr -> {
+            log.info(Arrays.toString(arr));
+        });
+    }
+
+    @Test
+    public void testWriter() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC, "bno");
+
+        String type = "w";
+        String keyword = "user09";
+
+        Page<Object[]> result = repo.getCustomPage(type, keyword, pageable);
+
+        log.info("" + result);
+        log.info("Total pages: " + result.getTotalPages());
+        log.info("Total size: " + result.getTotalElements());
+
+        result.getContent().forEach(arr -> {
+            log.info(Arrays.toString(arr));
+        });
     }
 }

@@ -1,6 +1,7 @@
 package com.han.board.controller;
 
 import com.han.board.domain.WebBoard;
+import com.han.board.persistence.CustomCrudRepository;
 import com.han.board.persistence.WebBoardRepository;
 import com.han.board.vo.PageMaker;
 import com.han.board.vo.PageVO;
@@ -23,8 +24,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Log
 public class WebBoardController {
 
+//    @Autowired
+//    private WebBoardRepository repo;
+
     @Autowired
-    private WebBoardRepository repo;
+    private CustomCrudRepository repo;
 
 //    @GetMapping("/list")
 //    public void list(
@@ -43,8 +47,7 @@ public class WebBoardController {
 
         Pageable page = vo.makePageable(0, "bno");
 
-        Page<WebBoard> result = repo.findAll(
-                repo.makePredicate(vo.getType(), vo.getKeyword()), page);
+        Page<Object[]> result = repo.getCustomPage(vo.getType(), vo.getKeyword(), page);
 
         log.info("" + page);
         log.info("" + result);
