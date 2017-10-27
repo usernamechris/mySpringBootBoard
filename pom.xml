@@ -83,7 +83,13 @@
 			<scope>test</scope>
 		</dependency>
 
-        <!-- query dsl -->
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity4</artifactId>
+			<version>3.0.2.RELEASE</version>
+		</dependency>
+
+		<!-- query dsl -->
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
