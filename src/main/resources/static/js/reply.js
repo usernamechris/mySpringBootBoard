@@ -59,5 +59,4 @@ var replyManager = (function () {
         update: update,
         remove: remove
     }
-
 })();
