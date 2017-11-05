@@ -4,6 +4,7 @@
       layout:decorate="~{/layout/layout1}" >
 
 <div layout:fragment="content" >
+    <form th:action="${'/login'}"></form>
 
     <div class="panel-heading">View Page</div>
     <div class="panel-body">
@@ -35,7 +36,7 @@
 
     </div>
 
-    <div class="pull-right" th:with="uid=${#authentication} eq 'anonymousUser' ? 'Guest' : ${#authentication.principal.member.uid} ">
+    <div class="pull-right" th:with="uid=${#authentication.principal} eq 'anonymousUser' ? 'Guest' : ${#authentication.principal.member.uid} ">
 
         <a th:if="${uid} eq ${vo.writer}"
             th:href="@{modify(page=${pageVO.page},
@@ -88,7 +89,7 @@
                     <label>Reply Text</label>
                     <input type="text" class="form-control" name="replyText">
                     <label>Replyer</label>
-                    <input type="text" class="form-control" name="replyer">
+                    <input type="text" class="form-control" name="replyer" readonly="readonly">
                 </div>
 
                 <div class="modal-footer">
@@ -146,7 +147,19 @@
 
             var mode;
 
+            var uid = [[${#authentication.principal} eq 'anonymousUser' ? null : ${#authentication.principal.member.uid}]];
+
+            var csrf = JSON.parse('[[${_csrf}]]');
+
             $("#addReplyBtn").on('click', function () {
+                if (uid == null) {
+                    if(confirm("로그인할까요?")) {
+                        self.location = [[@{/login}]];
+                    }
+                    return;
+                }
+                replyerObj.val(uid);
+
                $("#myModal").modal("show");
                $(".modal-title").text("Add Reply");
 
@@ -165,16 +178,29 @@
 
                if (mode == "ADD") {
 
-                   var obj = {replyText:replyText, replyer:replyer, bno:bno};
+                   var obj = {
+                       replyText:replyText,
+                       replyer:replyer,
+                       bno:bno,
+                       csrf:csrf
+                   };
 
                    replyManager.add(obj, function (list) {
                       printList(list);
-                      alert("새로운 댓글이 추가되었습니다")
-                       afterAll(list);
+                      alert("새로운 댓글이 추가되었습니다");
+                      afterAll(list);
                    });
                } else if (mode="MOD") {
-                   var obj = {replyText:replyText, bno:bno, rno:rno };
+                   var obj = {
+                       replyText:replyText,
+                       bno:bno,
+                       rno:rno,
+                       replyer:replyer,
+                       csrf:csrf
+                   };
+
                    console.log(obj);
+
                    replyManager.update(obj, function (list) {
                       alert("댓글이 수정되었습니다.");
                       afterAll(list);
@@ -194,7 +220,9 @@
             // 댓글 삭제
             var rno;
             $("#replyTable").on("click", "tr", function (e) {
+
                var tds = $(this).find('td') ;
+
                console.log(tds);
 
                rno = tds[0].innerHTML;
@@ -202,13 +230,25 @@
 
                replyTextObj.val(tds[1].innerHTML);
                replyerObj.val(tds[2].innerHTML);
+
+               $("#delModalBtn").show();
                $("#myModal").modal("show");
                $(".modal-title").text("Modiy/Delete Reply");
+
+               if (uid != tds[2].innerHTML.trim()) {
+                   $("#delModalBtn").hide();
+                   $("#modalBtn").hide();
+               }
             });
 
 
             $("#delModalBtn").on("click", function () {
-               var obj = {bno:bno, rno:rno};
+               var obj = {
+                   bno:bno,
+                   rno:rno,
+                   csrf:csrf
+               };
+
                replyManager.remove(obj, function (list) {
                   printList(list);
                   alert("댓글이 삭제되었습니다");

@@ -7,6 +7,7 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -20,6 +21,7 @@ public class WebReplyController {
     @Autowired
     private WebReplayRepository replyRepo;
 
+    @Secured(value = {"ROLE_BASIC", "ROLE_MANAGER", "ROLE_ADMIN"})
     @PostMapping("/{bno}")
     @Transactional
     public ResponseEntity<List<WebReply>> addReply (
@@ -45,6 +47,7 @@ public class WebReplyController {
         return replyRepo.getRepliesOfBoard(board);
     }
 
+    @Secured(value = {"ROLE_BASIC", "ROLE_MANAGER", "ROLE_ADMIN"})
     @Transactional
     @DeleteMapping("/{bno}/{rno}")
     public ResponseEntity<List<WebReply>> remove(
@@ -61,6 +64,7 @@ public class WebReplyController {
         return new ResponseEntity<List<WebReply>>(getListByBoard(board), HttpStatus.OK);
     }
 
+    @Secured(value = {"ROLE_BASIC", "ROLE_MANAGER", "ROLE_ADMIN"})
     @Transactional
     @PutMapping("/{bno}")
     public ResponseEntity<List<WebReply>> modify(

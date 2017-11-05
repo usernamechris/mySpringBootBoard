@@ -2,15 +2,12 @@ package com.han.board.controller;
 
 import com.han.board.domain.WebBoard;
 import com.han.board.persistence.CustomCrudRepository;
-import com.han.board.persistence.WebBoardRepository;
 import com.han.board.vo.PageMaker;
 import com.han.board.vo.PageVO;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
