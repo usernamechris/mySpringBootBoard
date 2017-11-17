@@ -152,16 +152,20 @@
             var csrf = JSON.parse('[[${_csrf}]]');
 
             $("#addReplyBtn").on('click', function () {
+
                 if (uid == null) {
                     if(confirm("로그인할까요?")) {
-                        self.location = [[@{/login}]];
+                        self.location = [[@{/login}]] + "?dest=" + encodeURIComponent(self.location);
                     }
                     return;
                 }
+
                 replyerObj.val(uid);
 
                $("#myModal").modal("show");
                $(".modal-title").text("Add Reply");
+
+               $("#delModalBtn").hide();
 
                mode = "ADD";
             })
